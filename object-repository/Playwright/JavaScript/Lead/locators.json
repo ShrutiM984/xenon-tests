@@ -1,0 +1,53 @@
+{
+  "LeadPage": {
+    "elem_g8awos": {
+      "type": "css",
+      "value": "span.toastMessage",
+      "source": "TC125",
+      "firstSeen": "2026-01-13",
+      "lastUsed": "2026-01-13"
+    },
+    "elem_8du4am": {
+      "type": "css",
+      "value": "records-record-layout-item >> text=AutomationLead",
+      "source": "TC125",
+      "firstSeen": "2026-01-13",
+      "lastUsed": "2026-01-13"
+    },
+    "elem_hse7eu": {
+      "type": "css",
+      "value": "#Login",
+      "source": "TC125",
+      "firstSeen": "2026-01-13",
+      "lastUsed": "2026-01-13"
+    },
+    "elem_6c3ysy": {
+      "type": "css",
+      "value": "one-app-launcher-menu-item >> text=Leads",
+      "source": "TC125",
+      "firstSeen": "2026-01-13",
+      "lastUsed": "2026-01-13"
+    },
+    "elem_7cp3s0": {
+      "type": "css",
+      "value": "shruti.mamidwar680@agentforce.com",
+      "source": "TC125",
+      "firstSeen": "2026-01-13",
+      "lastUsed": "2026-01-13"
+    },
+    "elem_b6pbl0": {
+      "type": "css",
+      "value": "Shrutee@2002",
+      "source": "TC125",
+      "firstSeen": "2026-01-13",
+      "lastUsed": "2026-01-13"
+    },
+    "elem_2qwi9t": {
+      "type": "css",
+      "value": "a[title=",
+      "source": "TC125",
+      "firstSeen": "2026-01-13",
+      "lastUsed": "2026-01-13"
+    }
+  }
+}
