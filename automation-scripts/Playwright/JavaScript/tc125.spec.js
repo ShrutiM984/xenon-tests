@@ -4,40 +4,62 @@ test.describe('Salesforce Lead Creation', () => {
 
   test('Verify successful Lead creation with required fields', async ({ page }) => {
 
-    // 🔹 Increase timeout (important for Salesforce)
-    test.setTimeout(120000); // 2 minutes
+    // 🔹 Increase timeout
+    test.setTimeout(120000);
 
-    // 🔹 Open Salesforce login
-    await page.goto('https://orgfarm-dc0c924067-dev-ed.develop.my.salesforce.com');
-    
-    await page.fill('#username', process.env.SALESFORCE_USERNAME);
-    await page.fill('#password', process.env.SALESFORCE_PASSWORD);
+    // 🔹 Login
+    await page.goto('https://login.salesforce.com');
+    await page.fill('#username', process.env.SF_USERNAME);
+    await page.fill('#password', process.env.SF_PASSWORD);
     await page.click('#Login');
 
-
-    // 🟡 PAUSE HERE FOR MFA
-    // Playwright Inspector opens → Enter OTP manually → Click Resume ▶️
+    // 🟡 Pause for MFA
     await page.pause();
 
-    // 🔹 Wait until Salesforce home page loads
-    await page.waitForURL(
-      url => url.includes('lightning'),
-      { timeout: 120000 }
+    // 🔹 Wait for Lightning
+    await page.waitForURL(url => url.includes('/lightning'), { timeout: 120000 });
+
+    // ---------------- APP LAUNCHER ----------------
+
+    // 🔹 Click App Launcher (9 dots)
+    await page.waitForSelector(
+      'button[title="App Launcher"]',
+      { timeout: 60000 }
     );
+    await page.click('button[title="App Launcher"]');
 
-    // ✅ Assertion: Home page loaded
-    await expect(page).toHaveURL(/lightning/);
+    // 🔹 Click "View All"
+    await page.waitForSelector('button:has-text("View All")');
+    await page.click('button:has-text("View All")');
 
-    // 🔹 Continue with Lead creation steps
+    // 🔹 Select Sales app
+    await page.waitForSelector('p:has-text("Sales")');
+    await page.click('p:has-text("Sales")');
+
+    // ---------------- LEADS ----------------
+
+    // 🔹 Click Leads tab
+    await page.waitForSelector('a[title="Leads"]', { timeout: 60000 });
     await page.click('a[title="Leads"]');
+
+    // 🔹 New Lead
+    await page.waitForSelector('a[title="New"]');
     await page.click('a[title="New"]');
 
-    await page.fill('input[name="LastName"]', 'PlaywrightLead');
-    await page.fill('input[name="Company"]', 'Playwright Inc');
+    // 🔹 Fill Lead form
+    await page.fill(
+      '//label[text()="Last Name"]/following::input[1]',
+      'PlaywrightLead'
+    );
+    await page.fill(
+      '//label[text()="Company"]/following::input[1]',
+      'Playwright Inc'
+    );
 
+    // 🔹 Save
     await page.click('button[name="SaveEdit"]');
 
-    // ✅ Verify success toast
+    // ✅ Verify toast
     const toast = page.locator('span.toastMessage');
     await expect(toast).toContainText('Lead');
   });
