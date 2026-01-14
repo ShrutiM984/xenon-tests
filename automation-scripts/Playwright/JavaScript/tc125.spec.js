@@ -6,9 +6,10 @@ test.describe('Salesforce Lead Creation', () => {
 
     // ---------- LOGIN ----------
     await page.goto('https://login.salesforce.com/?locale=in');
+    
+    await page.fill('#username', process.env.SALESFORCE_USERNAME as string);
+    await page.fill('#password', process.env.SALESFORCE_PASSWORD as string);
 
-    await page.fill('shruti.mamidwar680@agentforce.com', process.env.SF_USERNAME);
-    await page.fill('Shrutee@2002', process.env.SF_PASSWORD);
     await page.click('#Login');
 
     // Verify successful login
@@ -30,11 +31,13 @@ test.describe('Salesforce Lead Creation', () => {
 
     await page.click('button[name="SaveEdit"]');
 
+    // ---------- VERIFICATION ----------
     const toast = page.locator('span.toastMessage');
     await expect(toast).toContainText('Lead');
 
-    const leadHeader = page.locator('records-record-layout-item >> text=AutomationLead');
-    await expect(leadHeader).toBeVisible();
+    await expect(
+      page.locator('records-record-layout-item', { hasText: 'AutomationLead' })
+    ).toBeVisible();
   });
 
 });
