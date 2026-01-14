@@ -13,8 +13,12 @@ test.describe('Salesforce Lead Creation', () => {
     await page.click('#Login');
 
     // Verify successful login
+    await page.waitForTimeout(15000); // 15 seconds
+
     await page.waitForURL('**/lightning/**');
     await expect(page).toHaveURL(/lightning/);
+    await page.waitForSelector('one-appnav', { timeout: 100000 });
+
 
     // ---------- NAVIGATE TO LEADS ----------
     await page.click('button[aria-label="App Launcher"]');
