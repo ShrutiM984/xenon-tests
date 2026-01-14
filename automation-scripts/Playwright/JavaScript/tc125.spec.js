@@ -8,14 +8,12 @@ test.describe('Salesforce Lead Creation', () => {
     test.setTimeout(120000); // 2 minutes
 
     // 🔹 Open Salesforce login
-    await page.goto('https://login.salesforce.com');
-
-    // 🔹 Enter credentials
-    await page.fill('#username', process.env.SF_USERNAME);
-    await page.fill('#password', process.env.SF_PASSWORD);
-
-    // 🔹 Click Login
+    await page.goto('https://orgfarm-dc0c924067-dev-ed.develop.my.salesforce.com');
+    
+    await page.fill('#username', process.env.SALESFORCE_USERNAME);
+    await page.fill('#password', process.env.SALESFORCE_PASSWORD);
     await page.click('#Login');
+
 
     // 🟡 PAUSE HERE FOR MFA
     // Playwright Inspector opens → Enter OTP manually → Click Resume ▶️
