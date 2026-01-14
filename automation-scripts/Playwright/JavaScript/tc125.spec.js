@@ -1,68 +1,47 @@
-import { test, expect } from '@playwright/test';
+const { test, expect } = require('@playwright/test');
 
 test.describe('Salesforce Lead Creation', () => {
 
   test('Verify successful Lead creation with required fields', async ({ page }) => {
 
-    test.setTimeout(60000); // hard stop
+    // 🔹 Increase timeout (important for Salesforce)
+    test.setTimeout(120000); // 2 minutes
 
-    // ---------- LOGIN ----------
-    await page.goto('https://login.salesforce.com/?locale=in', { timeout: 10000 });
+    // 🔹 Open Salesforce login
+    await page.goto('https://login.salesforce.com');
 
-    await page.fill('#username', process.env.SALESFORCE_USERNAME);
-    await page.fill('#password', process.env.SALESFORCE_PASSWORD);
+    // 🔹 Enter credentials
+    await page.fill('#username', process.env.SF_USERNAME);
+    await page.fill('#password', process.env.SF_PASSWORD);
+
+    // 🔹 Click Login
     await page.click('#Login');
 
-    // ---------- WAIT MAX 10s FOR POST-LOGIN RESULT ----------
-    try {
-      await page.waitForURL('**/lightning/**', { timeout: 10000 });
-    } catch (e) {
-      const currentUrl = page.url();
+    // 🟡 PAUSE HERE FOR MFA
+    // Playwright Inspector opens → Enter OTP manually → Click Resume ▶️
+    await page.pause();
 
-      // 🚨 MFA detected
-      if (
-        currentUrl.includes('verification') ||
-        currentUrl.includes('challenge') ||
-        currentUrl.includes('identity')
-      ) {
-        throw new Error(
-          'Login blocked by Salesforce MFA. ' +
-          'Manual verification is not supported with 10s timeout / CI execution.'
-        );
-      }
+    // 🔹 Wait until Salesforce home page loads
+    await page.waitForURL(
+      url => url.includes('lightning'),
+      { timeout: 120000 }
+    );
 
-      throw new Error(`Login failed or Salesforce too slow. Current URL: ${currentUrl}`);
-    }
+    // ✅ Assertion: Home page loaded
+    await expect(page).toHaveURL(/lightning/);
 
-    // ---------- LIGHTNING READY ----------
-    await page.waitForSelector('one-appnav', { timeout: 10000 });
+    // 🔹 Continue with Lead creation steps
+    await page.click('a[title="Leads"]');
+    await page.click('a[title="New"]');
 
-    // ---------- APP LAUNCHER ----------
-    await page.getByRole('button', { name: 'App Launcher' })
-      .click({ timeout: 10000 });
+    await page.fill('input[name="LastName"]', 'PlaywrightLead');
+    await page.fill('input[name="Company"]', 'Playwright Inc');
 
-    // ---------- NAVIGATE TO LEADS ----------
-    const searchInput = page.getByPlaceholder('Search apps and items...');
-    await searchInput.waitFor({ state: 'visible', timeout: 10000 });
-    await searchInput.fill('Leads');
+    await page.click('button[name="SaveEdit"]');
 
-    await page.getByRole('menuitem', { name: 'Leads' })
-      .click({ timeout: 10000 });
-
-    // ---------- CREATE LEAD ----------
-    await page.getByRole('button', { name: 'New' })
-      .click({ timeout: 10000 });
-
-    await page.fill('input[name="lastName"]', 'AutomationLead');
-    await page.fill('input[name="Company"]', 'Xenon Corp');
-
-    await page.getByRole('button', { name: 'Save' })
-      .click({ timeout: 10000 });
-
-    // ---------- VERIFY ----------
-    await expect(page.locator('span.toastMessage'))
-      .toContainText('Lead', { timeout: 10000 });
-
+    // ✅ Verify success toast
+    const toast = page.locator('span.toastMessage');
+    await expect(toast).toContainText('Lead');
   });
 
 });
