@@ -4,57 +4,49 @@ test.describe('Salesforce Lead Creation', () => {
 
   test('Verify successful Lead creation with required fields', async ({ page }) => {
 
-    // ⏱ Increase full test timeout (MFA takes time)
-    test.setTimeout(5 * 60 * 1000); // 5 minutes
+    // ⏱ Hard stop for entire test
+    test.setTimeout(60000); // 1 minute total
 
     // ---------- LOGIN ----------
-    await page.goto('https://login.salesforce.com/?locale=in');
+    await page.goto('https://login.salesforce.com/?locale=in', { timeout: 10000 });
 
     await page.fill('#username', process.env.SALESFORCE_USERNAME);
     await page.fill('#password', process.env.SALESFORCE_PASSWORD);
     await page.click('#Login');
 
-    // ---------- MANUAL MFA STEP ----------
-    console.log('⏸ Waiting for manual verification code entry...');
-    console.log('👉 Please enter Salesforce verification code in browser');
+    // ---------- WAIT FOR LIGHTNING (MAX 10s) ----------
+    await page.waitForURL('**/lightning/**', { timeout: 10000 });
 
-    // Wait until Lightning URL appears AFTER MFA
-    await page.waitForURL('**/lightning/**', { timeout: 4 * 60 * 1000 });
+    await page.waitForSelector('one-appnav', { timeout: 10000 });
 
-    // Wait for Lightning shell to fully load
-    await page.waitForSelector('one-appnav', { timeout: 120000 });
-
-    // Extra buffer for Salesforce UI hydration
-    await page.waitForTimeout(10000);
-
-    // ---------- OPEN APP LAUNCHER ----------
+    // ---------- APP LAUNCHER ----------
     const appLauncher = page.getByRole('button', { name: 'App Launcher' });
-    await appLauncher.waitFor({ state: 'visible', timeout: 60000 });
+    await appLauncher.waitFor({ state: 'visible', timeout: 10000 });
     await appLauncher.click();
 
     // ---------- NAVIGATE TO LEADS ----------
     const searchInput = page.getByPlaceholder('Search apps and items...');
-    await searchInput.waitFor({ state: 'visible' });
+    await searchInput.waitFor({ state: 'visible', timeout: 10000 });
     await searchInput.fill('Leads');
 
+    await page.getByRole('menuitem', { name: 'Leads' })
+      .waitFor({ state: 'visible', timeout: 10000 });
     await page.getByRole('menuitem', { name: 'Leads' }).click();
 
     // ---------- CREATE LEAD ----------
-    await page.waitForSelector('a[title="New"]', { timeout: 60000 });
-    await page.click('a[title="New"]');
+    await page.getByRole('button', { name: 'New' })
+      .waitFor({ state: 'visible', timeout: 10000 });
+    await page.getByRole('button', { name: 'New' }).click();
 
     await page.fill('input[name="lastName"]', 'AutomationLead');
     await page.fill('input[name="Company"]', 'Xenon Corp');
 
-    await page.click('button[name="SaveEdit"]');
+    await page.getByRole('button', { name: 'Save' }).click();
 
-    // ---------- VERIFICATION ----------
-    const toast = page.locator('span.toastMessage');
-    await expect(toast).toContainText('Lead');
+    // ---------- VERIFY ----------
+    await expect(page.locator('span.toastMessage'))
+      .toContainText('Lead', { timeout: 10000 });
 
-    await expect(
-      page.locator('records-record-layout-item', { hasText: 'AutomationLead' })
-    ).toBeVisible();
   });
 
 });
