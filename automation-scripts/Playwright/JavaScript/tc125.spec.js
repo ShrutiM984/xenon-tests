@@ -9,9 +9,11 @@ test.describe('Salesforce Lead Creation', () => {
 
     // 🔹 Login
     await page.goto('https://login.salesforce.com');
-    await page.fill('#username', process.env.SF_USERNAME);
-    await page.fill('#password', process.env.SF_PASSWORD);
+    // 🔹 Enter credentials
+    await page.fill('#username', process.env.SALESFORCE_USERNAME);
+    await page.fill('#password', process.env.SALESFORCE_PASSWORD);
     await page.click('#Login');
+
 
     // 🟡 Pause for MFA
     await page.pause();
