@@ -7,8 +7,8 @@ test.describe('Salesforce Lead Creation', () => {
     // ---------- LOGIN ----------
     await page.goto('https://login.salesforce.com/?locale=in');
     
-    await page.fill('#username', process.env.SALESFORCE_USERNAME as string);
-    await page.fill('#password', process.env.SALESFORCE_PASSWORD as string);
+    await page.fill('#username', process.env.SALESFORCE_USERNAME);
+    await page.fill('#password', process.env.SALESFORCE_PASSWORD);
 
     await page.click('#Login');
 
