@@ -1,32 +1,18 @@
 const { test, expect } = require('@playwright/test');
 
 test.describe('Salesforce Lead Creation', () => {
-
   test('Verify successful Lead creation with required fields', async ({ page }) => {
-
     // 🔹 Increase timeout
     test.setTimeout(120000);
 
-    // 🔹 Login page
-    await page.goto('https://login.salesforce.com');
-
-    // 🔹 Enter credentials
-    await page.fill('#username', process.env.SALESFORCE_USERNAME);
-    await page.fill('#password', process.env.SALESFORCE_PASSWORD);
-    await page.click('#Login');
-
-    // 🟡 STOP HERE FOR MFA (Manual)
-    // Complete MFA → then click ▶ Resume in Playwright Inspector
-    await page.pause();
-
-    // 🔹 Wait for Salesforce Lightning (FIXED)
-    await page.waitForURL('**/lightning/**', { timeout: 120000 });
-
-    // 🔹 Small buffer after login (important for SF)
-    await page.waitForTimeout(5000);
+    // ✅ Start directly on Lightning - session is already authenticated via storageState.json!
+    // No login needed - the system automatically loads storageState.json
+    await page.goto('https://orgfarm-5694adb5bf-dev-ed.develop.lightning.force.com/lightning/page/home');
+    
+    // Optional: Wait for page to be ready
+    await page.waitForLoadState('networkidle');
 
     // ---------------- APP LAUNCHER ----------------
-    
     await page.waitForSelector('button[title="App Launcher"]', { timeout: 60000 });
     await page.click('button[title="App Launcher"]');
     
@@ -34,13 +20,13 @@ test.describe('Salesforce Lead Creation', () => {
     await page.waitForSelector('button:has-text("View All")');
     await page.click('button:has-text("View All")');
     
-    // Click Sales app (FIXED)
+    // Click Sales app
     await page.waitForSelector('one-app-launcher-app-tile[data-name="Sales"]', {
       timeout: 60000,
     });
     await page.click('one-app-launcher-app-tile[data-name="Sales"]');
+    
     // ---------------- LEADS ----------------
-
     // 🔹 Click Leads tab
     await page.waitForSelector('a[title="Leads"]', { timeout: 60000 });
     await page.click('a[title="Leads"]');
@@ -66,5 +52,4 @@ test.describe('Salesforce Lead Creation', () => {
     const toast = page.locator('span.toastMessage');
     await expect(toast).toContainText('Lead');
   });
-
 });
