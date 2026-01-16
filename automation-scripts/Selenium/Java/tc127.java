@@ -80,11 +80,16 @@ public class tc127 {
         );
         leadsTab.click();
 
-        // New Lead
+      By newBtn = By.cssSelector("button[name='New']");
+        
         WebElement newButton = wait.until(
-            ExpectedConditions.elementToBeClickable(By.cssSelector("a[title=\"New\"]"))
+            ExpectedConditions.elementToBeClickable(newBtn)
         );
-        newButton.click();
+        
+        ((JavascriptExecutor) driver).executeScript(
+            "arguments[0].click();", newButton
+        );
+
 
         // Fill Lead form
         WebElement lastNameInput = wait.until(
