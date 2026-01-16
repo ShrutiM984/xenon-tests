@@ -73,12 +73,13 @@ def test_lead_creation(driver):
         EC.element_to_be_clickable((By.CSS_SELECTOR, 'a[title="Leads"]'))
     )
     leads_tab.click()
-
-    # New Lead
+    
     new_button = wait.until(
-        EC.element_to_be_clickable((By.CSS_SELECTOR, 'a[title="New"]'))
+        EC.element_to_be_clickable((By.CSS_SELECTOR, "button[name='New']"))
     )
-    new_button.click()
+    
+    driver.execute_script("arguments[0].click();", new_button)
+
 
     # Fill Lead form
     last_name_input = wait.until(
