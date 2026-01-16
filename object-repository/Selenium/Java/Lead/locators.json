@@ -104,6 +104,62 @@
       "source": "TC003",
       "firstSeen": "2026-01-13",
       "lastUsed": "2026-01-13"
+    },
+    "elem_cj3ydh": {
+      "type": "xpath",
+      "value": "//button[text()=\\\"View All\\\"]",
+      "source": "TC127",
+      "firstSeen": "2026-01-16",
+      "lastUsed": "2026-01-16"
+    },
+    "elem_y8nhbj": {
+      "type": "xpath",
+      "value": "//label[text()=\\\"Last Name\\\"]/following::input[1]",
+      "source": "TC127",
+      "firstSeen": "2026-01-16",
+      "lastUsed": "2026-01-16"
+    },
+    "elem_2a07mh": {
+      "type": "xpath",
+      "value": "//label[text()=\\\"Company\\\"]/following::input[1]",
+      "source": "TC127",
+      "firstSeen": "2026-01-16",
+      "lastUsed": "2026-01-16"
+    },
+    "elem_bbgdwc": {
+      "type": "css",
+      "value": "button[title=\\\"App Launcher\\\"]",
+      "source": "TC127",
+      "firstSeen": "2026-01-16",
+      "lastUsed": "2026-01-16"
+    },
+    "elem_lillz": {
+      "type": "css",
+      "value": "one-app-launcher-app-tile[data-name=\\\"Sales\\\"]",
+      "source": "TC127",
+      "firstSeen": "2026-01-16",
+      "lastUsed": "2026-01-16"
+    },
+    "elem_uxoet7": {
+      "type": "css",
+      "value": "a[title=\\\"Leads\\\"]",
+      "source": "TC127",
+      "firstSeen": "2026-01-16",
+      "lastUsed": "2026-01-16"
+    },
+    "elem_yzzfrw": {
+      "type": "css",
+      "value": "a[title=\\\"New\\\"]",
+      "source": "TC127",
+      "firstSeen": "2026-01-16",
+      "lastUsed": "2026-01-16"
+    },
+    "elem_g8awos": {
+      "type": "css",
+      "value": "span.toastMessage",
+      "source": "TC127",
+      "firstSeen": "2026-01-16",
+      "lastUsed": "2026-01-16"
     }
   }
 }
