@@ -31,9 +31,10 @@ test.describe('Salesforce Lead Creation', () => {
     await page.waitForSelector('a[title="Leads"]', { timeout: 60000 });
     await page.click('a[title="Leads"]');
 
-    // 🔹 New Lead
-    await page.waitForSelector('a[title="New"]');
-    await page.click('a[title="New"]');
+    const newButton = page.locator('button[name="New"]');
+    await newButton.waitFor({ state: 'visible', timeout: 60000 });
+    await newButton.click({ force: true });
+
 
     // 🔹 Fill Lead form
     await page.fill(
