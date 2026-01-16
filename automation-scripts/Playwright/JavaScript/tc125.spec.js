@@ -26,19 +26,19 @@ test.describe('Salesforce Lead Creation', () => {
     await page.waitForTimeout(5000);
 
     // ---------------- APP LAUNCHER ----------------
-
-    // 🔹 Click App Launcher (9 dots)
+    
     await page.waitForSelector('button[title="App Launcher"]', { timeout: 60000 });
     await page.click('button[title="App Launcher"]');
-
-    // 🔹 Click "View All"
+    
+    // Click View All
     await page.waitForSelector('button:has-text("View All")');
     await page.click('button:has-text("View All")');
-
-    // 🔹 Select Sales app
-    await page.waitForSelector('p:has-text("Sales")');
-    await page.click('p:has-text("Sales")');
-
+    
+    // Click Sales app (FIXED)
+    await page.waitForSelector('one-app-launcher-app-tile[data-name="Sales"]', {
+      timeout: 60000,
+    });
+    await page.click('one-app-launcher-app-tile[data-name="Sales"]');
     // ---------------- LEADS ----------------
 
     // 🔹 Click Leads tab
