@@ -9,9 +9,7 @@ test.describe('Salesforce Lead Creation', () => {
     // No login needed - the system automatically loads storageState.json
     await page.goto('https://orgfarm-5694adb5bf-dev-ed.develop.lightning.force.com/lightning/page/home');
     
-    // Optional: Wait for page to be ready
-    await page.waitForLoadState('networkidle');
-
+   
     // ---------------- APP LAUNCHER ----------------
     await page.waitForSelector('button[title="App Launcher"]', { timeout: 60000 });
     await page.click('button[title="App Launcher"]');
