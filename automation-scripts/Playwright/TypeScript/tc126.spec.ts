@@ -34,15 +34,7 @@ test.describe('Salesforce Lead Creation', () => {
     await newButton.click({ force: true });
 
 
-    // 🔹 Fill Lead form
-    await page.fill(
-      '//label[text()="Last Name"]/following::input[1]',
-      'PlaywrightLead'
-    );
-    await page.fill(
-      '//label[text()="Company"]/following::input[1]',
-      'Playwright Inc'
-    );
+   
 
     // 🔹 Save
     await page.click('button[name="SaveEdit"]');
