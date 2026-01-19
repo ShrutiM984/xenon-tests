@@ -33,7 +33,15 @@ test.describe('Salesforce Lead Creation', () => {
     await newButton.waitFor({ state: 'visible', timeout: 60000 });
     await newButton.click({ force: true });
 
-
+   // 🔹 Fill Lead form
+    await page.fill(
+      '//label[text()="Last Name"]/following::input[1]',
+      'PlaywrightLead'
+    );
+    await page.fill(
+      '//label[text()="Company"]/following::input[1]',
+      'Playwright Inc'
+    );
    
 
     // 🔹 Save
