@@ -16,7 +16,7 @@ import java.time.Duration;
  * Selenium Java Test for Salesforce Lead Creation
  * Test Case: TC125 - Verify successful Lead creation with required fields
  */
-public class tc127 {
+public class TC127 {
     
     private WebDriver driver;
     private WebDriverWait wait;
