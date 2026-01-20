@@ -1,128 +1,127 @@
 package test;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Cookie;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
 import java.time.Duration;
+import java.util.Set;
 
 /**
  * Selenium Java Test for Salesforce Lead Creation
- * Test Case: TC125 - Verify successful Lead creation with required fields
+ * Test Case: TC127 - Verify successful Lead creation with required fields
  */
 public class TC127 {
-    
+
     private WebDriver driver;
     private WebDriverWait wait;
-    
+
     @BeforeMethod
     public void setUp() {
-        // Configure Chrome options
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--no-sandbox");
-        options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--window-size=1920,1080");
-        
-        // For headless mode, uncomment:
-        // options.addArguments("--headless=new");
-        
-        // Initialize WebDriver
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--no-sandbox");
+
         driver = new ChromeDriver(options);
-        driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(120));
-        
+        driver.manage().window().maximize();
+
         wait = new WebDriverWait(driver, Duration.ofSeconds(60));
+
+        // 🔐 Step 1: Open Salesforce domain FIRST
+        driver.get("https://login.salesforce.com");
+
+        // 🔐 Step 2: Inject cookies (from storageState.json via MCP)
+        injectSalesforceCookies();
+
+        // 🔐 Step 3: Refresh to apply session
+        driver.navigate().refresh();
     }
-    
+
     @Test
     public void testLeadCreation() {
-        /**
-         * Verify successful Lead creation with required fields in Salesforce
-         * Note: For Selenium, you may need to handle authentication separately
-         * or use cookies from storageState.json if available
-         */
-        
-        // ✅ Start directly on Lightning - session should be authenticated
+
+        // Navigate directly to Lightning Home
         driver.get("https://orgfarm-5694adb5bf-dev-ed.develop.lightning.force.com/lightning/page/home");
-        
-        // Wait for page to load
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.tagName("body")));
 
         // ---------------- APP LAUNCHER ----------------
         WebElement appLauncher = wait.until(
-            ExpectedConditions.elementToBeClickable(By.cssSelector("button[title=\"App Launcher\"]"))
+                ExpectedConditions.elementToBeClickable(By.cssSelector("button[title='App Launcher']"))
         );
         appLauncher.click();
-        
-        // Click View All
+
         WebElement viewAll = wait.until(
-            ExpectedConditions.elementToBeClickable(By.xpath("//button[text()=\"View All\"]"))
+                ExpectedConditions.elementToBeClickable(By.xpath("//button[text()='View All']"))
         );
         viewAll.click();
-        
-        // Click Sales app
+
         WebElement salesApp = wait.until(
-            ExpectedConditions.elementToBeClickable(By.cssSelector("one-app-launcher-app-tile[data-name=\"Sales\"]"))
+                ExpectedConditions.elementToBeClickable(
+                        By.cssSelector("one-app-launcher-app-tile[data-name='Sales']")
+                )
         );
         salesApp.click();
 
         // ---------------- LEADS ----------------
-        // Click Leads tab
         WebElement leadsTab = wait.until(
-            ExpectedConditions.elementToBeClickable(By.cssSelector("a[title=\"Leads\"]"))
+                ExpectedConditions.elementToBeClickable(By.cssSelector("a[title='Leads']"))
         );
         leadsTab.click();
 
-      By newBtn = By.cssSelector("button[name='New']");
-        
         WebElement newButton = wait.until(
-            ExpectedConditions.elementToBeClickable(newBtn)
-        );
-        
-        ((JavascriptExecutor) driver).executeScript(
-            "arguments[0].click();", newButton
+                ExpectedConditions.elementToBeClickable(By.cssSelector("button[name='New']"))
         );
 
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", newButton);
 
-        // Fill Lead form
-        WebElement lastNameInput = wait.until(
-            ExpectedConditions.presenceOfElementLocated(By.xpath("//label[text()=\"Last Name\"]/following::input[1]"))
+        // ---------------- FILL REQUIRED FIELDS ----------------
+        WebElement lastName = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(
+                        By.xpath("//label[text()='Last Name']/following::input[1]")
+                )
         );
-        lastNameInput.clear();
-        lastNameInput.sendKeys("SeleniumJavaLead");
-        
-        WebElement companyInput = wait.until(
-            ExpectedConditions.presenceOfElementLocated(By.xpath("//label[text()=\"Company\"]/following::input[1]"))
-        );
-        companyInput.clear();
-        companyInput.sendKeys("Selenium Java Inc");
+        lastName.sendKeys("SeleniumJavaLead");
 
-        // Save
+        WebElement company = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(
+                        By.xpath("//label[text()='Company']/following::input[1]")
+                )
+        );
+        company.sendKeys("Selenium Java Inc");
+
         WebElement saveButton = wait.until(
-            ExpectedConditions.elementToBeClickable(By.cssSelector("button[name=\"SaveEdit\"]"))
+                ExpectedConditions.elementToBeClickable(By.cssSelector("button[name='SaveEdit']"))
         );
         saveButton.click();
 
-        // ✅ Verify toast message
+        // ---------------- VERIFY TOAST ----------------
         WebElement toast = wait.until(
-            ExpectedConditions.presenceOfElementLocated(By.cssSelector("span.toastMessage"))
+                ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[role='alert']"))
         );
-        
-        String toastText = toast.getText();
-        assert toastText.contains("Lead") : "Expected 'Lead' in toast message, but got: " + toastText;
+
+        Assert.assertTrue(
+                toast.getText().contains("Lead"),
+                "Expected Lead creation toast, but got: " + toast.getText()
+        );
     }
-    
-    @AfterMethod
-    public void tearDown() {
-        if (driver != null) {
-            driver.quit();
-        }
-    }
-}
+
+    /**
+     * Inject Salesforce cookies extracted from storageState.json
+     * (Generated by MCP — not Playwright at runtime)
+     */
+    private void injectSalesforceCookies() {
+        Set<Cookie> cookiesFromMCP = SalesforceCookieStore.getCookies();
+
+        for (Cookie cookie : cookiesFromMCP)
