@@ -124,4 +124,15 @@ public class TC127 {
     private void injectSalesforceCookies() {
         Set<Cookie> cookiesFromMCP = SalesforceCookieStore.getCookies();
 
-        for (Cookie cookie : cookiesFromMCP)
+        for (Cookie cookie : cookiesFromMCP) {
+            driver.manage().addCookie(cookie);
+        }
+    }
+
+    @AfterMethod
+    public void tearDown() {
+        if (driver != null) {
+            driver.quit();
+        }
+    }
+}
