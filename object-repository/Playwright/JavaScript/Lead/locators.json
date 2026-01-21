@@ -5,7 +5,7 @@
       "value": "span.toastMessage",
       "source": "TC125",
       "firstSeen": "2026-01-13",
-      "lastUsed": "2026-01-13"
+      "lastUsed": "2026-01-21"
     },
     "elem_8du4am": {
       "type": "css",
@@ -47,7 +47,28 @@
       "value": "a[title=",
       "source": "TC125",
       "firstSeen": "2026-01-13",
-      "lastUsed": "2026-01-13"
+      "lastUsed": "2026-01-21"
+    },
+    "elem_z3yqnm": {
+      "type": "css",
+      "value": "button[title=",
+      "source": "TC131",
+      "firstSeen": "2026-01-21",
+      "lastUsed": "2026-01-21"
+    },
+    "elem_czr9sw": {
+      "type": "css",
+      "value": "button:has-text(",
+      "source": "TC131",
+      "firstSeen": "2026-01-21",
+      "lastUsed": "2026-01-21"
+    },
+    "elem_3v78zu": {
+      "type": "css",
+      "value": "one-app-launcher-app-tile[data-name=",
+      "source": "TC131",
+      "firstSeen": "2026-01-21",
+      "lastUsed": "2026-01-21"
     }
   }
 }
