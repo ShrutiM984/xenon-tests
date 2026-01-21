@@ -30,7 +30,9 @@ test.describe('Salesforce Account Creation', () => {
     await page.click('a[title="Accounts"]');
 
     // Click New
-    const newBtn = page.locator('button[name="New"]');
+    const newBtn = page.locator(
+  'li[data-target-selection-name="sfdc:StandardButton.Account.New"] a'
+);
     await newBtn.waitFor({ state: 'visible' });
     await newBtn.click({ force: true });
 
