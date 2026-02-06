@@ -29,10 +29,25 @@ test.describe('Salesforce Lead Creation', () => {
     await page.waitForSelector('a[title="Leads"]', { timeout: 60000 });
     await page.click('a[title="Leads"]');
 
-    await page.locator('button[name="New"]').waitFor({ state: 'visible' });
-    await page.locator('button[name="New"]').click({ force: true });
-
- 
+      // Click New
+    await page.locator('button[name="New"]').first().waitFor({
+      state: 'attached',
+      timeout: 60000
+    });
+    await page.locator('button[name="New"]').first().click({ force: true });
+    
+    // Fill Last Name
+    await page.fill(
+      '//label[text()="Last Name"]/following::input[1]',
+      'PlaywrightUser'
+    );
+    
+    // Fill Company
+    await page.fill(
+      '//label[text()="Company"]/following::input[1]',
+      'OpenAI'
+    );
+    
 
     // 🔹 Save
     await page.click('button[name="SaveEdit"]');
