@@ -10,7 +10,7 @@ test('FORCE real timeout failure on New button', async ({ page }) => {
 
   await page.waitForLoadState('domcontentloaded');
 
-  // Click Leads tab
+  // Leads tab
   const leadsTab = page.locator('a[title="Leads"]');
 
   await leadsTab.waitFor({
@@ -20,12 +20,10 @@ test('FORCE real timeout failure on New button', async ({ page }) => {
 
   await leadsTab.click();
 
-  // Correct Salesforce New locator
-  const newButton = page.locator(
-    'li[data-target-selection-name="sfdc:StandardButton.Lead.New"] a'
-  );
+  // Correct New locator from your DOM
+  const newButton = page.locator('a[title="New"]');
 
-  // Intentionally very small timeout to force failure
+  // Intentionally small timeout for failure
   await newButton.waitFor({
     state: 'visible',
     timeout: 100
