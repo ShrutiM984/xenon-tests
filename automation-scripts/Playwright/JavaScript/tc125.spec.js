@@ -1,20 +1,19 @@
-const { test, expect } = require('@playwright/test');
+import { test, expect } from '@playwright/test';
 
-test('Google search test', async ({ page }) => {
+test('Login to Sauce Demo and validate Products page', async ({ page }) => {
+  await page.goto('https://www.saucedemo.com/');
 
-  // Open Google
-  await page.goto('https://www.google.com');
+  await page.locator('#user-name').fill('standard_user');
+  await page.locator('#password').fill('secret_sauce');
 
-  // Type into search box
-  await page.fill('textarea[name="q"]', 'Playwright Automation');
+  await page.locator('#login-button').click();
 
-  // Press Enter
-  await page.keyboard.press('Enter');
+  await expect(page).toHaveURL(/inventory/);
 
-  // Verify results page loaded
-  await expect(page).toHaveURL(/search/);
+  await expect(page.locator('.title')).toHaveText('Products');
 
-  // Verify search results visible
-  await expect(page.locator('h3').first()).toBeVisible();
-
+  await page.screenshot({
+    path: 'screenshots/login-success.png',
+    fullPage: true
+  });
 });
