@@ -9,7 +9,7 @@ test.describe('Salesforce Account Creation', () => {
 
     // ✅ Directly open Lightning (authenticated via storageState.json)
     await page.goto(
-      'https://enterprise-app-2429.lightning.force.com/lightning/o/Lead/list?filterName=AllOpenLeads'
+      'https://login.salesforce.com'
     );
 
     // ---------------- APP LAUNCHER ----------------
