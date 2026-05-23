@@ -12,7 +12,8 @@ test('Verify successful Account creation', async ({ page }) => {
   await page.waitForLoadState('domcontentloaded');
 
   // ---------------- ACCOUNTS TAB ----------------
-  const accountsTab = page.getByRole('link', { name: 'Accounts' });
+  // Using exact title selector to avoid strict mode issue
+  const accountsTab = page.locator('a[title="Accounts"]');
 
   await accountsTab.waitFor({
     state: 'visible',
