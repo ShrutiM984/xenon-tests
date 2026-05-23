@@ -1,27 +1,49 @@
-await page.goto(
-  'https://enterprise-app-2429.lightning.force.com/lightning/o/Account/list?filterName=AllAccounts'
-);
+import { test, expect } from '@playwright/test';
 
-await page.waitForLoadState('domcontentloaded');
+test('Verify successful Account creation', async ({ page }) => {
 
-// Click Accounts tab
-const accountsTab = page.getByRole('link', { name: 'Accounts' });
+  test.setTimeout(120000);
 
-await accountsTab.waitFor({
-  state: 'visible',
-  timeout: 30000
+  // Open Salesforce Accounts page
+  await page.goto(
+    'https://enterprise-app-2429.lightning.force.com/lightning/o/Account/list?filterName=AllAccounts'
+  );
+
+  await page.waitForLoadState('domcontentloaded');
+
+  // ---------------- ACCOUNTS TAB ----------------
+  const accountsTab = page.getByRole('link', { name: 'Accounts' });
+
+  await accountsTab.waitFor({
+    state: 'visible',
+    timeout: 30000
+  });
+
+  await accountsTab.click();
+
+  // ---------------- NEW BUTTON ----------------
+  const newButton = page.locator(
+    'li[data-target-selection-name="sfdc:StandardButton.Account.New"] a'
+  );
+
+  await newButton.waitFor({
+    state: 'visible',
+    timeout: 30000
+  });
+
+  await newButton.click();
+
+  // ---------------- ACCOUNT FORM ----------------
+  const accountName = `Playwright Account ${Date.now()}`;
+
+  await page.locator('input[name="Name"]').fill(accountName);
+
+  // Save
+  await page.locator('button[name="SaveEdit"]').click();
+
+  // ---------------- VERIFICATION ----------------
+  const toastMessage = page.locator('span.toastMessage');
+
+  await expect(toastMessage).toContainText('Account');
+
 });
-
-await accountsTab.click();
-
-// Click New button
-const newButton = page.locator(
-  'li[data-target-selection-name="sfdc:StandardButton.Account.New"] a'
-);
-
-await newButton.waitFor({
-  state: 'visible',
-  timeout: 30000
-});
-
-await newButton.click();
