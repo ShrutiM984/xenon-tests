@@ -1,5 +1,4 @@
-const { test } = require('@playwright/test');
-
+import { test, expect } from '@playwright/test';
 test('FORCE real timeout failure on New button', async ({ page }) => {
 
   test.setTimeout(30000);
