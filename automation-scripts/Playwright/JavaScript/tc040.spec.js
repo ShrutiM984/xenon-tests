@@ -23,9 +23,7 @@ test('Verify successful Account creation', async ({ page }) => {
   await accountsTab.click();
 
   // ---------------- NEW BUTTON ----------------
-  const newButton = page.locator(
-    'li[data-target-selection-name="sfdc:StandardButton.Account.New"] a'
-  );
+  const newButton = page.locator('a[title="New"]');
 
   await newButton.waitFor({
     state: 'visible',
