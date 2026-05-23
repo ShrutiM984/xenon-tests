@@ -2,7 +2,7 @@ const { test } = require('@playwright/test');
 
 test('FORCE timeout on New button', async ({ page }) => {
 
-  await page.goto('https://enterprise-app-2429.lightning.force.com/lightning/o/Lead/list?filterName=AllOpenLeads');
+  await page.goto('https://login.salesforce.com');
 
   await page.locator('a[title="Leads"]').click();
 
