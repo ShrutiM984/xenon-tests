@@ -1,0 +1,28 @@
+{
+  "Recorded TestPage": {
+    "elem_20gblg": {
+      "type": "css",
+      "value": "span.title"
+    },
+    "username": {
+      "type": "id",
+      "value": "user-name"
+    },
+    "password": {
+      "type": "id",
+      "value": "password"
+    },
+    "loginbutton": {
+      "type": "id",
+      "value": "login-button"
+    },
+    "reactburgermenubtn": {
+      "type": "id",
+      "value": "react-burger-menu-btn"
+    },
+    "logout_sidebar_link": {
+      "type": "id",
+      "value": "logout_sidebar_link"
+    }
+  }
+}
