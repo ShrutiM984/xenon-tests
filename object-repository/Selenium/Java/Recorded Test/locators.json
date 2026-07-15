@@ -2,27 +2,33 @@
   "Recorded TestPage": {
     "elem_20gblg": {
       "type": "css",
-      "value": "span.title"
+      "value": "span.title",
+      "lastUsed": "2026-07-15"
     },
     "username": {
       "type": "id",
-      "value": "user-name"
+      "value": "user-name",
+      "lastUsed": "2026-07-15"
     },
     "password": {
       "type": "id",
-      "value": "password"
+      "value": "password",
+      "lastUsed": "2026-07-15"
     },
     "loginbutton": {
       "type": "id",
-      "value": "login-button"
+      "value": "login-button",
+      "lastUsed": "2026-07-15"
     },
     "reactburgermenubtn": {
       "type": "id",
-      "value": "react-burger-menu-btn"
+      "value": "react-burger-menu-btn",
+      "lastUsed": "2026-07-15"
     },
     "logout_sidebar_link": {
       "type": "id",
-      "value": "logout_sidebar_link"
+      "value": "logout_sidebar_link",
+      "lastUsed": "2026-07-15"
     }
   }
 }
