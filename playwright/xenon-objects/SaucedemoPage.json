@@ -1,0 +1,39 @@
+{
+  "SaucedemoPage": {
+    "username": {
+      "type": "css",
+      "value": "[data-test=\"username\"]",
+      "source": "TC016",
+      "firstSeen": "2026-07-22",
+      "lastUsed": "2026-07-22"
+    },
+    "password": {
+      "type": "css",
+      "value": "[data-test=\"password\"]",
+      "source": "TC016",
+      "firstSeen": "2026-07-22",
+      "lastUsed": "2026-07-22"
+    },
+    "loginButton": {
+      "type": "css",
+      "value": "[data-test=\"login-button\"]",
+      "source": "TC016",
+      "firstSeen": "2026-07-22",
+      "lastUsed": "2026-07-22"
+    },
+    "logoutSidebarLink": {
+      "type": "css",
+      "value": "[data-test=\"logout-sidebar-link\"]",
+      "source": "TC016",
+      "firstSeen": "2026-07-22",
+      "lastUsed": "2026-07-22"
+    },
+    "reactBurgerMenuBtn": {
+      "type": "css",
+      "value": "#react-burger-menu-btn",
+      "source": "TC016",
+      "firstSeen": "2026-07-22",
+      "lastUsed": "2026-07-22"
+    }
+  }
+}
